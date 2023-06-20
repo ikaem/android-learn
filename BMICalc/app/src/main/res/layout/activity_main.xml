@@ -54,19 +54,26 @@
 
 
         <EditText
-            android:id="@+id/edit_text_height"
+            android:id="@+id/edit_text_height_meters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Height"
+            android:hint="Meters"
             android:inputType="number" />
 
         <EditText
-            android:id="@+id/edit_text_weight"
+            android:id="@+id/edit_text_height_centimeters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Weight"
+            android:hint="Centimeters"
             android:inputType="number" />
     </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_text_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Weight"
+        android:inputType="number" />
 
     <Button
         android:id="@+id/button_calculate"
@@ -79,8 +86,7 @@
         android:id="@+id/text_view_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:text="23.6 You are a healthy weight!" />
+        android:layout_margin="24dp" />
 
 </LinearLayout>
 
