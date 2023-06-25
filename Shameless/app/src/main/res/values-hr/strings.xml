@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shameless</string>
+    <string name="contact_name">Ime kontakta</string>
+    <string name="contact_number">Broj kontakta</string>
+    <string name="example">Primjer</string>
+</resources>

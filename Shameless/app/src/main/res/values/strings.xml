@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Shameless</string>
+    <string name="contact_name">Contact Name</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="example">Example</string>
+</resources>
