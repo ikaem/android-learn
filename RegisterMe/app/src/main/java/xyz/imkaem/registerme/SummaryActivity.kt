@@ -1,5 +1,7 @@
 package xyz.imkaem.registerme
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Build.VERSION
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,31 @@ class SummaryActivity : AppCompatActivity() {
 
         retrieveRegistrationSummary()
         displayRegistrationSummary()
+        setButtonListeners()
+    }
+
+    private fun setButtonListeners() {
+        button_to_email.setOnClickListener {
+            val content: String = "${registrationSummary.title} ${registrationSummary.lastName}"
+
+            val intent: Intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:${registrationSummary.email}")
+                putExtra(Intent.EXTRA_SUBJECT, content)
+            }
+
+            startActivity(intent)
+        }
+
+        button_to_sms.setOnClickListener {
+            val content: String = "${registrationSummary.title} ${registrationSummary.lastName}"
+
+            val intent: Intent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("smsto: ${registrationSummary.phoneNumber}")
+                putExtra(Intent.EXTRA_STREAM, content)
+            }
+
+            startActivity(intent)
+        }
     }
 
 
