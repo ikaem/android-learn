@@ -10,24 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RecordMe"
+        android:theme="@style/Theme.LifecycleApp"
         tools:targetApi="31">
-        <activity
-            android:name=".CyclingEditRecordActivity"
-            android:parentActivityName=".MainActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".RunningEditRecordActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
