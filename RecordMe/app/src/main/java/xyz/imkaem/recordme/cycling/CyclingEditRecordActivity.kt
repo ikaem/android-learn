@@ -1,4 +1,4 @@
-package xyz.imkaem.recordme
+package xyz.imkaem.recordme.cycling
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

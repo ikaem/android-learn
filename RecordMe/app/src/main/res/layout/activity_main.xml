@@ -20,7 +20,7 @@
         android:id="@+id/fragment_container_view_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:name="xyz.imkaem.recordme.RunningFragment"
+        android:name="xyz.imkaem.recordme.running.RunningFragment"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view_bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

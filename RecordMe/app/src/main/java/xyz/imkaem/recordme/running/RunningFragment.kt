@@ -1,11 +1,12 @@
-package xyz.imkaem.recordme
+package xyz.imkaem.recordme.running
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import xyz.imkaem.recordme.databinding.FragmentRunningBinding
 
@@ -41,6 +42,42 @@ class RunningFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupClickListeners()
+//        this is not called if back with device back button happens
+//        setupDisplayRecords()
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        this is called even when device app back buztton is pressed
+        setupDisplayRecords()
+    }
+
+    private fun setupDisplayRecords() {
+//        we could do this to access getSharedPrefs on context - which is activity that the fragment attached itself to
+//        val sharedPreferences: SharedPreferences? =
+//            context?.getSharedPreferences("running", Context.MODE_PRIVATE)
+
+//        required context will guive us non null context
+        val sharedPreferences: SharedPreferences =
+            requireContext().getSharedPreferences("running", Context.MODE_PRIVATE)
+
+        val record5kmTime: String? = sharedPreferences.getString("record-time-5km", null)
+        val record5kmDate: String? = sharedPreferences.getString("record-date-5km", null)
+
+        val record10kmTime: String? = sharedPreferences.getString("record-time-10km", null)
+        val record10kmDate: String? = sharedPreferences.getString("record-date-10km", null)
+
+        val record15kmTime: String? = sharedPreferences.getString("record-time-15km", null)
+        val record15kmDate: String? = sharedPreferences.getString("record-date-15km", null)
+
+        viewBinding.textViewResult5kmRunning.text = record5kmTime
+        viewBinding.textViewDate5kmRunning.text = record5kmDate
+
+        viewBinding.textViewResult10kmRunning.text = record10kmTime
+        viewBinding.textViewDate10kmRunning.text = record10kmDate
+
+        viewBinding.textViewResult15kmRunning.text = record15kmTime
+        viewBinding.textViewDate15kmRunning.text = record15kmDate
     }
 
     private fun setupClickListeners() {

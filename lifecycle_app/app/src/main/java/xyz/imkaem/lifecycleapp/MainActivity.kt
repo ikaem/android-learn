@@ -3,24 +3,25 @@ package xyz.imkaem.lifecycleapp
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import xyz.imkaem.lifecycleapp.databinding.ActivityMainBinding
-import java.io.File
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), TestFragment.TestFragmentListener {
 
     private lateinit var viewBiding: ActivityMainBinding
     private var isFirstLoad: Boolean = true
 
     var seconds = 0;
     private lateinit var refreshTimer: Timer
+
+    private var testFragment: TestFragment = TestFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +59,9 @@ class MainActivity : AppCompatActivity() {
             saveMessage()
         }
 
+        viewBiding.buttonShowFragment.setOnClickListener { showFragment()}
+        viewBiding.buttonHideFragment.setOnClickListener { hideFragment()}
+
 //        we can set it here because we will set updated ones in onRestart
         viewBiding.textViewRefreshStatus.text = "Hello - status is 'onCreate'"
 
@@ -92,6 +96,20 @@ class MainActivity : AppCompatActivity() {
 //        THIS IS IN onCreate
         val textViewSavedMessage: String = savedInstanceState?.getString("savedTextViewMessage") ?: ""
         viewBiding.textViewMessage.text = textViewSavedMessage
+    }
+
+    private fun showFragment() {
+        supportFragmentManager.commit {
+
+            add(R.id.fragment_container_view_test_fragment_container, testFragment)
+
+        }
+    }
+
+    private fun hideFragment() {
+        supportFragmentManager.commit {
+            remove(testFragment)
+        }
     }
 
     private fun saveMessage() {
@@ -191,5 +209,9 @@ class MainActivity : AppCompatActivity() {
         val savedTextViewMessage: String = viewBiding.textViewMessage.text.toString()
         outState.putString("savedTextViewMessage", savedTextViewMessage)
 
+    }
+
+    override fun clearActivityScreen() {
+        Toast.makeText(this@MainActivity, "clearing screen", Toast.LENGTH_LONG).show()
     }
 }

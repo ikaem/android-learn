@@ -13,8 +13,17 @@
   <component name="ChangeListManager">
     <list default="true" id="e4112b8b-6c54-4cc4-af15-3cd8274d53b3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/CyclingEditRecordActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/cycling/CyclingEditRecordActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/CyclingFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/cycling/CyclingFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/RunningEditRecordActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/running/RunningEditRecordActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/RunningFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/xyz/imkaem/recordme/running/RunningFragment.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_cycling_edit_record.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_cycling_edit_record.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_running_edit_record.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_running_edit_record.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lifecycle_app/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../lifecycle_app/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lifecycle_app/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lifecycle_app/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lifecycle_app/app/src/main/java/xyz/imkaem/lifecycleapp/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../lifecycle_app/app/src/main/java/xyz/imkaem/lifecycleapp/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lifecycle_app/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lifecycle_app/app/src/main/res/layout/activity_main.xml" afterDir="false" />
     </list>
@@ -23,7 +32,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[/Users/karlo/.android/avd/Pixel_5_API_33.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[49f57436]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -78,17 +87,21 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DEBUGGABLE_DEVICE" value="Pixel_5_API_33 [emulator-5554]" />
+    <property name="DEBUGGABLE_PROCESS" value="xyz.imkaem.recordme" />
+    <property name="DEBUGGER_ID" value="Auto" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
+    <property name="SHOW_ALL_PROCESSES" value="false" />
     <property name="android-custom-view/Users/karlo/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/bottomnavigation/BottomNavigationView.java_SELECTED" value="BottomNavigationView" />
     <property name="android-custom-view/Users/karlo/.gradle/caches/modules-2/files-2.1/com.google.android.material/material/1.9.0/8ad443d2a33a5bbdf4210e3964cf79cc5021f12a/material-1.9.0-sources.jar!/com/google/android/material/navigation/NavigationBarView.java_SELECTED" value="NavigationBarView" />
     <property name="android-custom-view/Users/karlo/Library/Android/sdk/sources/android-33/android/widget/ImageView.java_SELECTED" value="ImageView" />
     <property name="cidr.known.project.marker" value="true" />
-    <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="JAVA&#10;kotlin" />
+    <property name="com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File" value="kotlin&#10;JAVA" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/layout" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.DirectoryMappings" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -97,6 +110,10 @@
     </key>
     <key name="android.template.-31277258">
       <recent name="xyz.imkaem.recordme" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="xyz.imkaem.recordme.cycling" />
+      <recent name="xyz.imkaem.recordme.running" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="xyz.imkaem.recordme" />
@@ -185,6 +202,17 @@
       <updated>1688130312758</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>

@@ -6,15 +6,50 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view_test_fragment_container"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_test" />
+
+    <LinearLayout
+        android:id="@+id/linear_layout_fragment_control_buttons_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container_view_test_fragment_container">
+
+
+        <Button
+            android:id="@+id/button_show_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Show parent" />
+
+        <Button
+            android:id="@+id/button_hide_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hide parent" />
+
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/text_view_refresh_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="This will be refresh text."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="This will be refresh text." />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_view_length_status"

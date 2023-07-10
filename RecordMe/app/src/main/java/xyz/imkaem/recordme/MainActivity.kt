@@ -4,15 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
+import xyz.imkaem.recordme.cycling.CyclingFragment
 import xyz.imkaem.recordme.databinding.ActivityMainBinding
+import xyz.imkaem.recordme.running.RunningFragment
 
 // deprecated
 //class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
