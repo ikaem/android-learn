@@ -1,11 +1,18 @@
 package xyz.imkaem.first_my_compose
 
+import com.google.gson.annotations.SerializedName
+
 data class Restaurant(
+    @SerializedName("r_id")
     val id: Int,
+    @SerializedName("r_title")
     val title: String,
+    @SerializedName("r_description")
     val description: String,
+    var isFavorite: Boolean = false
 )
 
+/*
 val dummyRestaurants = listOf<Restaurant>(
     Restaurant(
         id = 1,
@@ -74,4 +81,4 @@ val dummyRestaurants = listOf<Restaurant>(
     ),
 
 
-    )
+    )*/

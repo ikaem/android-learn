@@ -1,26 +1,59 @@
 package xyz.imkaem.first_my_compose
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun RestaurantScreen() {
+//    show how to use corutine scope here
+/*    val scope = rememberCoroutineScope()
+    LaunchedEffect(key1 = "save user", block = {
+//        now we use scope
+        scope.launch(Dispatchers.IO) {
+//            now some suspend function here
+
+        }
+    } )*/
+
+
+//    Tghis is actually instantiating it here
+    val viewModel: RestaurantsViewModel = viewModel()
+
+//    now making remote request
+//    not a greate solution
+//    viewModel.getRestaurants()
+
+//    better solutiuion
+//    note that the block is trailing lambda
+//    might not be best because configuraiton change happens on device rortaiton because activity of this is destroy ed on cofnigrtaiton change - so we get rebuild and create a new call
+//    LaunchedEffect("request_restaurants") {
+//        viewModel.getRestaurants()
+//    }
+
+//    state of resturaint items
+//    val state: MutableState<List<Restaurant>> = remember {
+////    to prevent losing data on rotration
+////    val state: MutableState<List<Restaurant>> = rememberSaveable {
+//        mutableStateOf(viewModel.getRestaurants())
+//    }
+
 //    RestaurantItem()
 
 //    Column(
@@ -40,17 +73,80 @@ fun RestaurantScreen() {
     )
 
     {
-        items(dummyRestaurants) { restaurant ->
-            RestaurantItem(restaurant)
+        item(viewModel.errorState.value) {
+            if(viewModel.errorState.value) {
+                Text(text = "Error getting restaurants")
+            }
+            Text("what")
         }
-
-
+//        TODO old
+//        items(dummyRestaurants) { restaurant ->
+//        items(state.value) { restaurant ->
+        items(viewModel.restaurantsState.value) { restaurant ->
+            RestaurantItem(
+                restaurant,
+                onClick = { id -> viewModel.toggleFavorite(id) }
+//                onClick = viewModel::toggleFavorite
+//                onClick = { id ->
+//
+//                    //                get restraints
+//                    val restaurants = state.value.toMutableList()
+//
+////                get current item index
+//                    val itemIndex = restaurants.indexOfFirst {
+//                        it.id == id
+//                    }
+//
+////                then get item
+//                    val item = restaurants[itemIndex]
+//
+////                then something to copy into item index
+//                    val updatedItem: Restaurant = item.copy(isFavorite = !item.isFavorite)
+//                    restaurants[itemIndex] = updatedItem
+//
+////                and then set value of restaurants
+//                    state.value = restaurants
+//
+//                }
+            )
+//            { id ->
+////                get restraints
+//                val restaurants = state.value.toMutableList()
+//
+////                get current item index
+//                val itemIndex = restaurants.indexOfFirst {
+//                    it.id == id
+//                }
+//
+////                then get item
+//                val item = restaurants[itemIndex]
+//
+////                then something to copy into item index
+//                val updatedItem: Restaurant = item.copy(isFavorite = !item.isFavorite)
+//                restaurants[itemIndex] = updatedItem
+//
+////                and then set value of restaurants
+//                state.value = restaurants
+//
+//
+//            }
+        }
     }
 }
 
 
 @Composable
-fun RestaurantItem(restaurant: Restaurant) {
+fun RestaurantItem(restaurant: Restaurant, onClick: (id: Int) -> Unit) {
+//    val favoriteState: MutableState<Boolean> = remember {
+//        mutableStateOf(false)
+//    }
+
+    val icon: ImageVector = if (restaurant.isFavorite) {
+        Icons.Filled.Favorite
+    } else {
+        Icons.Filled.FavoriteBorder
+    }
+
 
 
     Card(
@@ -71,18 +167,55 @@ fun RestaurantItem(restaurant: Restaurant) {
             RestaurantDetails(
                 restaurant.title,
                 restaurant.description,
-                Modifier.weight(0.85f)
+                Modifier.weight(0.7f)
             )
+            RestaurantIcon(
+                icon,
+                Modifier.weight(0.15f),
+//                { favoriteState.value = !favoriteState.value })
+            ) {
+                onClick(restaurant.id)
+            }
+//            FavoriteIcon(Modifier.weight(0.15f))
         }
     }
 }
 
+//
+//TOOD not needed
 @Composable
-private fun RestaurantIcon(icon: ImageVector, modifier: Modifier) {
+private fun FavoriteIcon(modifier: Modifier, icon: ImageVector, onClick: () -> Unit) {
+
+//    val favoriteState: MutableState<Boolean> = remember {
+//        mutableStateOf(false)
+//    }
+//
+//    val icon: ImageVector = if (favoriteState.value) {
+//        Icons.Filled.Favorite
+//    } else {
+//        Icons.Filled.FavoriteBorder
+//    }
+
+
+    Image(
+        imageVector = icon,
+        contentDescription = "Favorite Icon",
+        modifier = modifier
+            .padding(8.dp)
+            .clickable {
+                onClick()
+            }
+    )
+}
+
+@Composable
+private fun RestaurantIcon(icon: ImageVector, modifier: Modifier, onClick: () -> Unit = {}) {
     Image(
         imageVector = icon,
         contentDescription = "Restaurant Icon",
-        modifier = modifier.padding(8.dp)
+        modifier = modifier
+            .padding(8.dp)
+            .clickable { onClick() }
     )
 }
 
