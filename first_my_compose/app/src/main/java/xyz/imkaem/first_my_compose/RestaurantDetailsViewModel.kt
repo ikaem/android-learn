@@ -1,6 +1,7 @@
 package xyz.imkaem.first_my_compose
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +10,9 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class RestaurantDetailsViewModel() : ViewModel() {
+class RestaurantDetailsViewModel(
+    private val stateHandle: SavedStateHandle,
+) : ViewModel() {
     private lateinit var restInterface: RestaurantApiService
 
     val state = mutableStateOf<Restaurant?>(null)
@@ -24,9 +27,12 @@ class RestaurantDetailsViewModel() : ViewModel() {
 
         restInterface = retrofit.create(RestaurantApiService::class.java)
 
+//        this is test
+        val id = stateHandle.get<Int>("restaurant_id")?: 0
+
 //        calling to get data
         viewModelScope.launch {
-            val restaurant = getRemoteRestaurant(2)
+            val restaurant = getRemoteRestaurant(id)
             state.value = restaurant
         }
 

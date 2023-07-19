@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun RestaurantScreen() {
+fun RestaurantScreen(
+    onItemClick: (id: Int) -> Unit = {}
+) {
 //    show how to use corutine scope here
 /*    val scope = rememberCoroutineScope()
     LaunchedEffect(key1 = "save user", block = {
@@ -74,7 +76,7 @@ fun RestaurantScreen() {
 
     {
         item(viewModel.errorState.value) {
-            if(viewModel.errorState.value) {
+            if (viewModel.errorState.value) {
                 Text(text = "Error getting restaurants")
             }
             Text("what")
@@ -85,7 +87,9 @@ fun RestaurantScreen() {
         items(viewModel.restaurantsState.value) { restaurant ->
             RestaurantItem(
                 restaurant,
-                onClick = { id -> viewModel.toggleFavorite(id) }
+                onFavoriteClick = { id -> viewModel.toggleFavorite(id) },
+                onItemClick = { id -> onItemClick(id) }
+//                onItemClick = { id -> viewModel.onItemClicked(id) }
 //                onClick = viewModel::toggleFavorite
 //                onClick = { id ->
 //
@@ -136,7 +140,11 @@ fun RestaurantScreen() {
 
 
 @Composable
-fun RestaurantItem(restaurant: Restaurant, onClick: (id: Int) -> Unit) {
+fun RestaurantItem(
+    restaurant: Restaurant,
+    onFavoriteClick: (id: Int) -> Unit,
+    onItemClick: (id: Int) -> Unit,
+) {
 //    val favoriteState: MutableState<Boolean> = remember {
 //        mutableStateOf(false)
 //    }
@@ -151,7 +159,7 @@ fun RestaurantItem(restaurant: Restaurant, onClick: (id: Int) -> Unit) {
 
     Card(
         elevation = 4.dp,
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp).clickable { onItemClick(restaurant.id) }
     ) {
 
 //        this is i guess drawing inside the card
@@ -174,7 +182,7 @@ fun RestaurantItem(restaurant: Restaurant, onClick: (id: Int) -> Unit) {
                 Modifier.weight(0.15f),
 //                { favoriteState.value = !favoriteState.value })
             ) {
-                onClick(restaurant.id)
+                onFavoriteClick(restaurant.id)
             }
 //            FavoriteIcon(Modifier.weight(0.15f))
         }
@@ -184,7 +192,7 @@ fun RestaurantItem(restaurant: Restaurant, onClick: (id: Int) -> Unit) {
 //
 //TOOD not needed
 @Composable
-private fun FavoriteIcon(modifier: Modifier, icon: ImageVector, onClick: () -> Unit) {
+fun FavoriteIcon(modifier: Modifier, icon: ImageVector, onClick: () -> Unit) {
 
 //    val favoriteState: MutableState<Boolean> = remember {
 //        mutableStateOf(false)
@@ -209,7 +217,7 @@ private fun FavoriteIcon(modifier: Modifier, icon: ImageVector, onClick: () -> U
 }
 
 @Composable
-private fun RestaurantIcon(icon: ImageVector, modifier: Modifier, onClick: () -> Unit = {}) {
+fun RestaurantIcon(icon: ImageVector, modifier: Modifier, onClick: () -> Unit = {}) {
     Image(
         imageVector = icon,
         contentDescription = "Restaurant Icon",
@@ -220,9 +228,15 @@ private fun RestaurantIcon(icon: ImageVector, modifier: Modifier, onClick: () ->
 }
 
 @Composable
-private fun RestaurantDetails(title: String, description: String, modifier: Modifier) {
+fun RestaurantDetails(
+    title: String,
+    description: String,
+    modifier: Modifier,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
+) {
     Column(
-        modifier = modifier
+        modifier = modifier,
+        horizontalAlignment = horizontalAlignment,
     ) {
         Text(text = title, style = MaterialTheme.typography.h6)
         CompositionLocalProvider(

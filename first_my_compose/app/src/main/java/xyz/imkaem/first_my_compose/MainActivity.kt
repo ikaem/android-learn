@@ -17,8 +17,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             First_my_composeTheme {
+                RestaurantsApp()
                 // A surface container using the 'background' color from the theme
-                RestaurantScreen()
+//                RestaurantScreen()
 //                Surface(
 //                    modifier = Modifier.fillMaxSize(),
 //                    color = MaterialTheme.colors.background
