@@ -6,16 +6,27 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.ConnectException
+import java.net.UnknownHostException
 
-class RestaurantsViewModel(private val stateHandle: SavedStateHandle) : ViewModel() {
+class RestaurantsViewModel(
+//    NOT needed at this pojtn
+//    private val stateHandle: SavedStateHandle
+) : ViewModel() {
 
     val restaurantsState = mutableStateOf(emptyList<Restaurant>())
     val errorState: MutableState<Boolean> = mutableStateOf(false)
 
     //    define instance of our rest interface
     private lateinit var restInterface: RestaurantApiService
+
+    //    getting dao
+    private var restaurantsDao: RestaurantsDao =
+        RestaurantsDb.getDaoInstance(RestaurantsApplication.getAppContext())
+
     private val errorHandler: CoroutineExceptionHandler =
         CoroutineExceptionHandler { _, exception ->
             errorState.value = true
@@ -47,10 +58,62 @@ class RestaurantsViewModel(private val stateHandle: SavedStateHandle) : ViewMode
         getRestaurants()
     }
 
-    private suspend fun getRemoteRestautants(): List<Restaurant> {
+    private suspend fun getAllRestautants(): List<Restaurant> {
         return withContext(Dispatchers.IO) {
-            restInterface.getRestaurants()
+
+            try {
+
+                refreshCache()
+
+//            restInterface.getRestaurants()
+
+//                val restaurants = restInterface.getRestaurants()
+//                restaurantsDao.insertAll(restaurants)
+
+//            used if multiople lines in the file
+//                return@withContext restaurants
+            } catch (e: Exception) {
+
+                when (e) {
+                    is UnknownHostException,
+                    is ConnectException,
+                    is HttpException -> {
+                        if (restaurantsDao.getAll()
+                                .isEmpty()
+                        ) throw Exception("Something went wrong. We have no data")
+                    }
+                    else -> throw e
+                }
+
+
+//                when (e) {
+//                    is UnknownHostException,
+//                    is ConnectException,
+//                    is HttpException -> {
+//                        return@withContext restaurantsDao.getAll()
+//                    }
+//                    else -> throw e
+//                }
+            }
+
+            return@withContext restaurantsDao.getAll()
         }
+    }
+
+    private suspend fun refreshCache() {
+        val remoteRestaurants = restInterface.getRestaurants();
+
+        val favoritedRestaurants =
+            restaurantsDao.getAllFavorited() // - it is important to get favorited befire we isneirt into db anew
+
+
+        restaurantsDao.insertAll(remoteRestaurants)
+
+        restaurantsDao.updateAll(favoritedRestaurants.map {
+            PartialRestaurant(it.id, true)
+        })
+
+//        and now we update
     }
 
     //    with our own coroutine
@@ -62,9 +125,10 @@ class RestaurantsViewModel(private val stateHandle: SavedStateHandle) : ViewMode
         viewModelScope.launch(errorHandler) {
 //            val restaurants = restInterface.getRestaurants()
 //            now we can call the above suspend function from any scope with any dispatcher
-            val restaurants = getRemoteRestautants()
+            val restaurants = getAllRestautants()
             withContext(Dispatchers.Main) {
-                restaurantsState.value = restaurants.restoreSelections()
+//                restaurantsState.value = restaurants.restoreSelections()
+                restaurantsState.value = restaurants
             }
         }
 
@@ -131,67 +195,96 @@ class RestaurantsViewModel(private val stateHandle: SavedStateHandle) : ViewMode
 //        )
 //    }
 
-    fun toggleFavorite(id: Int) {
+    private suspend fun toggleFavoriteRestaurant(id: Int, oldValue: Boolean): List<Restaurant> =
+        withContext(Dispatchers.IO) {
+            restaurantsDao.update(
+                PartialRestaurant(
+                    id = id,
+                    isFavorite = !oldValue
+                )
+            )
+
+//            this would work too
+//            restaurantsDao.getAll()
+            return@withContext restaurantsDao.getAll()
+        }
+
+    fun toggleFavorite(id: Int, oldValue: Boolean) {
 //        now we get stuff as before
-        val restaurants = restaurantsState.value.toMutableList()
-        val itemIndex = restaurants.indexOfFirst { it.id == id }
-        val item = restaurants[itemIndex]
-        val updatedItem = item.copy(isFavorite = !item.isFavorite)
+//        val restaurants = restaurantsState.value.toMutableList()
+//        val itemIndex = restaurants.indexOfFirst { it.id == id }
+//        val item = restaurants[itemIndex]
+//        val updatedItem = item.copy(isFavorite = !item.isFavorite)
 
-        storeSelection(updatedItem)
+//        storeSelection(updatedItem)
 
-        restaurants[itemIndex] = updatedItem
-        restaurantsState.value = restaurants
+//        restaurants[itemIndex] = updatedItem
+//        restaurantsState.value = restaurants
+
+        viewModelScope.launch {
+            val updatedRestaurants = toggleFavoriteRestaurant(id, oldValue)
+            restaurantsState.value = updatedRestaurants
+        }
     }
 
-    private fun storeSelection(item: Restaurant) {
-//        HOW ARE we sure that we will get a list here  - because we call to mutable list
-//        get reference to this state handle thing
-        val savedToggled = stateHandle.get<List<Int>?>(FAVORITES).orEmpty().toMutableList()
-
-        if (item.isFavorite) savedToggled.add(item.id)
-        else savedToggled.remove(item.id)
-
-//       now set data again
-        stateHandle[FAVORITES] = savedToggled
-
-    }
+//    private fun storeSelection(item: Restaurant) {
+////        HOW ARE we sure that we will get a list here  - because we call to mutable list
+////        get reference to this state handle thing
+////        val savedToggled = stateHandle.get<List<Int>?>(FAVORITES).orEmpty().toMutableList()
+///**/
+////        if (item.isFavorite) savedToggled.add(item.id)
+////        else savedToggled.remove(item.id)
+////
+//////       now set data again
+////        stateHandle[FAVORITES] = savedToggled
+//
+//    }
 
     companion object {
         private const val FAVORITES = "favorites"
     }
 
     //i guess this returns list of restrainst
-    private fun List<Restaurant>.restoreSelections(): List<Restaurant> {
-//    this is actually this list of restraints here
-//        val me = this
-
+//    not needed
+//    private fun List<Restaurant>.restoreSelections(): List<Restaurant> {
+////    this is actually this list of restraints here
+////        val me = this
 //
-//    now here i guess we manipulate that same list
-        stateHandle.get<List<Int>?>(FAVORITES)?.let { favoritedIds ->
-//            ok, here this is list of restaurants
-            // it is single restaurant
-//            so it is a map
-            val restaurantsMap = this.associateBy { it.id }
-
-//            now we loop over all selected ids and say that if individual rest id is in the map, we will set its favorit eto trhe
-            favoritedIds.forEach { id -> restaurantsMap[id]?.isFavorite = true }
-
-
-            // then we return values of the map
-            return restaurantsMap.values.toList()
-
-//            what does actually set new list into this? let?
-
-
-        }
-//            then we retur nthis
-        return this
-    }
-
-    suspend fun storeUser() {
-//        some blocking action
-    }
+////
+////    now here i guess we manipulate that same list
+//        stateHandle.get<List<Int>?>(FAVORITES)?.let { favoritedIds ->
+////            ok, here this is list of restaurants
+//            // it is single restaurant
+////            so it is a map
+//            val restaurantsMap = this.associateBy { it.id }.toMutableMap()
+//
+////            now we loop over all selected ids and say that if individual rest id is in the map, we will set its favorit eto trhe
+//            favoritedIds.forEach { id ->
+//
+////                find restaurant by id or return null
+//                val restraurant = restaurantsMap[id] ?: return@forEach
+//
+//                restaurantsMap[id] = restraurant.copy(isFavorite = true)
+//
+//
+////                restaurantsMap[id]?.isFavorite = true
+//            }
+//
+//
+//            // then we return values of the map
+//            return restaurantsMap.values.toList()
+//
+////            what does actually set new list into this? let?
+//
+//
+//        }
+////            then we retur nthis
+//        return this
+//    }
+//
+//    suspend fun storeUser() {
+////        some blocking action
+//    }
 
 //    just test - this is not good way to call a suspend function
 //    fun saveDetails() {

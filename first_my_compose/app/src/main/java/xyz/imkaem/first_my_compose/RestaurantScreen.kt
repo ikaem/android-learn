@@ -87,7 +87,7 @@ fun RestaurantScreen(
         items(viewModel.restaurantsState.value) { restaurant ->
             RestaurantItem(
                 restaurant,
-                onFavoriteClick = { id -> viewModel.toggleFavorite(id) },
+                onFavoriteClick = { id, oldValue -> viewModel.toggleFavorite(id, oldValue) },
                 onItemClick = { id -> onItemClick(id) }
 //                onItemClick = { id -> viewModel.onItemClicked(id) }
 //                onClick = viewModel::toggleFavorite
@@ -142,7 +142,7 @@ fun RestaurantScreen(
 @Composable
 fun RestaurantItem(
     restaurant: Restaurant,
-    onFavoriteClick: (id: Int) -> Unit,
+    onFavoriteClick: (id: Int, oldValue: Boolean) -> Unit,
     onItemClick: (id: Int) -> Unit,
 ) {
 //    val favoriteState: MutableState<Boolean> = remember {
@@ -159,7 +159,9 @@ fun RestaurantItem(
 
     Card(
         elevation = 4.dp,
-        modifier = Modifier.padding(8.dp).clickable { onItemClick(restaurant.id) }
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onItemClick(restaurant.id) }
     ) {
 
 //        this is i guess drawing inside the card
@@ -182,7 +184,7 @@ fun RestaurantItem(
                 Modifier.weight(0.15f),
 //                { favoriteState.value = !favoriteState.value })
             ) {
-                onFavoriteClick(restaurant.id)
+                onFavoriteClick(restaurant.id, restaurant.isFavorite)
             }
 //            FavoriteIcon(Modifier.weight(0.15f))
         }

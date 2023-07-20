@@ -1,13 +1,10 @@
 package xyz.imkaem.first_my_compose
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.NavType
+import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 
 @Composable
 fun RestaurantsApp() {
@@ -29,6 +26,10 @@ fun RestaurantsApp() {
 
                 }
             ),
+            deepLinks = listOf(navDeepLink {
+                uriPattern =
+                    "www.restaurantsapp.details.com/{restaurant_id}"
+            })
         ) { navStackEntry ->
 
 //            we dont do this because the view model needs id, not the screen
