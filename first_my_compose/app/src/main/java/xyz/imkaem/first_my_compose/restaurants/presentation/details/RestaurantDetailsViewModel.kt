@@ -1,4 +1,4 @@
-package xyz.imkaem.first_my_compose
+package xyz.imkaem.first_my_compose.restaurants.presentation.details
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -9,6 +9,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import xyz.imkaem.first_my_compose.restaurants.data.remote.RemoteRestaurant
+import xyz.imkaem.first_my_compose.restaurants.data.remote.RestaurantApiService
+import xyz.imkaem.first_my_compose.restaurants.domain.Restaurant
 
 class RestaurantDetailsViewModel(
     private val stateHandle: SavedStateHandle,
@@ -28,7 +31,7 @@ class RestaurantDetailsViewModel(
         restInterface = retrofit.create(RestaurantApiService::class.java)
 
 //        this is test
-        val id = stateHandle.get<Int>("restaurant_id")?: 0
+        val id = stateHandle.get<Int>("restaurant_id") ?: 0
 
 //        calling to get data
         viewModelScope.launch {
@@ -40,9 +43,17 @@ class RestaurantDetailsViewModel(
 
     private suspend fun getRemoteRestaurant(id: Int): Restaurant {
         return withContext(Dispatchers.IO) {
-            val responseMap: Map<Int, Restaurant> = restInterface.getRestaurant(id)
+            val responseMap: Map<Int, RemoteRestaurant> = restInterface.getRestaurant(id)
 
-            return@withContext responseMap.values.first()
+            return@withContext responseMap.values.first().let {
+//                let allows us to tap into object
+                Restaurant(
+                    it.id,
+                    it.title,
+                    it.description,
+//                    it.isFavorite,
+                )
+            }
         }
     }
 

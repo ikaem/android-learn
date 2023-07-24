@@ -1,10 +1,13 @@
 package xyz.imkaem.first_my_compose
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import xyz.imkaem.first_my_compose.restaurants.presentation.list.RestaurantsViewModel
 
 @Composable
 fun RestaurantsApp() {
@@ -12,9 +15,19 @@ fun RestaurantsApp() {
     val navController: NavHostController = rememberNavController();
     NavHost(navController, startDestination = "restaurants") {
         composable(route = "restaurants") {
+//            we initalize view model here
+//            val viewModel: RestaurantsViewModel = viewModel()
+//            using this for DI purposes
+            val viewModel: RestaurantsViewModel = hiltViewModel()
+            val state = viewModel.state;
 //            no this - lambda call will also call funciton
 //            RestaurantScreen()
-            RestaurantScreen { id ->
+            RestaurantsScreen(
+                state = state.value,
+                onFavoriteClick = { id, oldValue ->
+                    viewModel.toggleFavorite(id, oldValue)
+                }
+            ) { id ->
                 navController.navigate("restaurants/$id")
             }
         }
